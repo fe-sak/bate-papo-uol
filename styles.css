@@ -1,6 +1,5 @@
 * {
     box-sizing: border-box;
-    font-family: 'Roboto', sans-serif;
 }
 
 body {
@@ -56,11 +55,11 @@ header ion-icon {
     padding-left: 17px;
 }
 
-input::placeholder {
+.bottom-bar input::placeholder {
     font: italic 400 18px roboto;
 }
 
-input:focus {
+.bottom-bar input:focus {
     outline: none;
 }
 
@@ -69,7 +68,77 @@ input:focus {
 
     margin-right: 27px;
 }
-.chat {
+
+main .chat {
     margin: 106px 0 80px 0;
     height: 550px;
+}
+
+main .chat .message {
+    width: 100%;
+    border-radius: 2px;
+    padding: 8px;
+    margin-bottom: 4px;
+
+    background-color: white;
+
+    font: normal 400 16px roboto;
+}
+
+main .chat .message.status {
+    background-color: #DCDCDC;
+}
+
+main .chat .message.private_message {
+    background-color: #FFDEDE;
+}
+
+.sidebar {
+    height: 100%;
+    width: 259px;
+
+    position: fixed;
+    top: 0;
+    right: 0;
+    
+    z-index: 3;
+
+    background-color: white;
+
+    transform: translateX(100%);
+
+    transition: all 1s ease-in-out;
+}
+
+.sidebar.active {
+    transform: translateX(0%);
+}
+
+.sidebar-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    height: 100%;
+    width: 100%;
+
+    z-index: 2;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    background-color: rgba(0, 0, 0, 0.6);
+
+    transition: all 1s ease-in-out;
+
+}
+
+.sidebar-background.active {
+    opacity: 1;
+
+    visibility: visible;
+    pointer-events: initial;
 }

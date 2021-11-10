@@ -18,13 +18,14 @@
 <body>
     <header>
         <img src="assets/logo 1.png" alt="">
-        <ion-icon name="people"></ion-icon>
+        <ion-icon name="people" onclick="toggleSidebar()"></ion-icon>
 
     </header>
     <main>
         <div class="chat">
-
         </div>
+        <div class="sidebar"></div>
+        <div class="sidebar-background" onclick="toggleSidebar()"></div>
     </main>
     <div class="bottom-bar">
         <input placeholder="Escreva aqui..." type="text">
