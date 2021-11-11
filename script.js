@@ -1,12 +1,40 @@
-function serverRequest() {
-    axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/messages").then(load);
+let globalName = prompt("Qual o seu nome?");
+
+enterChat();
+
+function enterChat() {
+
+    let name = globalName;
+    axios.post("https://mock-api.driven.com.br/api/v4/uol/participants", { name }).then(success(name)).catch(error);
 }
 
-serverRequest();
+function success(name) {
+    axios.post("https://mock-api.driven.com.br/api/v4/uol/status", { name });
 
-setInterval(serverRequest, 3000);
+    setInterval(connection, 5000, name);
+}
 
-function load(answer) {
+function error() {
+    globalName = prompt("Seu nome já existe no servidor! Por favor, digite outro.");
+
+    enterChat();
+}
+
+function connection(name) {
+    axios.post("https://mock-api.driven.com.br/api/v4/uol/status", { name });
+}
+
+
+requestMessages();
+
+setInterval(requestMessages, 1000);
+setInterval(requestParticipants, 1000);
+
+function requestMessages() {
+    axios.get("https://mock-api.driven.com.br/api/v4/uol/messages").then(loadMessages);
+}
+
+function loadMessages(answer) {
     document.querySelector(".chat").innerHTML = "";
 
     for (let i = 0; i < answer.data.length; i++) {
@@ -24,7 +52,7 @@ function load(answer) {
             </div>`
         }
 
-        if (answer.data[i].type == "private_message") {
+        if (answer.data[i].type == "private_message" && answer.data[i].from == globalName) {
             document.querySelector(".chat").innerHTML +=
                 `<div class="message ${answer.data[i].type}" data-identifier="message">
                 ${answer.data[i].time} <strong> ${answer.data[i].from}</strong> reservadamente para <strong>${answer.data[i].to}</strong>: ${answer.data[i].text}
@@ -33,6 +61,29 @@ function load(answer) {
     }
 
     document.querySelector(".chat .message:last-child").scrollIntoView();
+}
+
+function requestParticipants() {
+    axios.get("https://mock-api.driven.com.br/api/v4/uol/participants").then(participants);
+}
+
+function participants(answer) {
+    console.log(answer.data[0]); // bônus 
+}
+
+
+function sendMessage() {
+    axios.post("https://mock-api.driven.com.br/api/v4/uol/messages",
+        {
+            from: globalName,
+            to: "Todos",
+            text: document.querySelector("input").value,
+            type: "message"
+        });
+
+    requestMessages();
+
+    document.querySelector("input").value = ''; iha
 }
 
 function toggleSidebar() {
