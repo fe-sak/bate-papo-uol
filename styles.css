@@ -8,39 +8,33 @@ body {
 
 header, .bottom-bar {
     background-color: white;
-
     width: 100%;
     height: 80px;
-
     position: fixed;
     left: 0;
-
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
+
 header {
     top: 0;
-    
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 header img {
     width: 75px;
     height: 53px;
-
     margin-left: 22px;
 }
 
 header ion-icon {
     font-size: 42px;
-
     margin-right: 22px;
 }
 
 .bottom-bar {
     bottom: 0;
-
     box-shadow: 0px -4px 6px rgba(0, 0, 0, 0.05);
 }
 
@@ -49,9 +43,7 @@ header ion-icon {
     width: 80%;
     width: -webkit-fill-available;
     width: -moz-available;
-
     border: none;
-
     padding-left: 17px;
 }
 
@@ -65,7 +57,6 @@ header ion-icon {
 
 .bottom-bar ion-icon {
     font-size: 26px;
-
     margin-right: 27px;
 }
 
@@ -78,10 +69,9 @@ main .chat .message {
     border-radius: 2px;
     padding: 8px;
     margin-bottom: 4px;
-
     background-color: white;
-
     font: normal 400 16px roboto;
+    overflow-wrap: break-word;
 }
 
 main .chat .message.status {
@@ -95,17 +85,12 @@ main .chat .message.private_message {
 .sidebar {
     height: 100%;
     width: 259px;
-
     position: fixed;
     top: 0;
     right: 0;
-    
     z-index: 3;
-
     background-color: white;
-
     transform: translateX(100%);
-
     transition: all 1s ease-in-out;
 }
 
@@ -117,27 +102,75 @@ main .chat .message.private_message {
     position: fixed;
     top: 0;
     left: 0;
-
     height: 100%;
     width: 100%;
-
     z-index: 2;
-
     opacity: 0;
-
     visibility: hidden;
-
     pointer-events: none;
-
     background-color: rgba(0, 0, 0, 0.6);
-
     transition: all 1s ease-in-out;
-
 }
 
 .sidebar-background.active {
     opacity: 1;
-
     visibility: visible;
     pointer-events: initial;
+}
+
+.sidebar .participants {
+    overflow: scroll;
+    height: 300px;
+}
+
+.participants::-webkit-scrollbar {
+    display: none;
+}
+
+.participants {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.sidebar span {
+    font: 400 16px/18.75px roboto;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding-right: 30px;
+}
+
+.sidebar>span {
+    font: 700 16px/18.75px roboto;
+    text-align: center;
+    display: block;
+    margin: 40px 0;
+}
+
+.sidebar ion-icon {
+    font-size: 30px;
+    margin: 0 8px 0 17px;
+}
+
+.sidebar .visibility ion-icon {
+    font-size: 24px;
+}
+
+.sidebar .check {
+    font-size: 20px;
+    color: #28BB25;
+    position: absolute;
+    right: 0;
+}
+
+.sidebar .participant, .sidebar .visibility {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+    position: relative;
+}
+
+.display-none {
+    display: none;
 }

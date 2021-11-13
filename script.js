@@ -26,9 +26,9 @@ function connection(name) {
 
 
 requestMessages();
-
-setInterval(requestMessages, 1000);
-setInterval(requestParticipants, 1000);
+requestParticipants();
+setInterval(requestMessages, 3000);
+setInterval(requestParticipants, 10000);
 
 function requestMessages() {
     axios.get("https://mock-api.driven.com.br/api/v4/uol/messages").then(loadMessages);
@@ -68,7 +68,26 @@ function requestParticipants() {
 }
 
 function participants(answer) {
-    console.log(answer.data[0]); // bônus 
+    console.log(answer.data);
+    document.querySelector(".participants").innerHTML =
+        `<div class="participant" onclick="selectParticipant(this)">
+            <ion-icon name="people"></ion-icon>
+            <span>Todos</span>
+            <ion-icon class="check" name="checkmark-outline"></ion-icon>
+        </div>`;
+    for (let i = 0; i < answer.data.length; i++) {
+        document.querySelector(".participants").innerHTML +=
+            `<div class="participant" onclick="selectParticipant(this)">
+                <ion-icon name="people"></ion-icon>
+                <span>${answer.data[i].name}</span>
+                <ion-icon class="check display-none" name="checkmark-outline"></ion-icon>
+            </div>`;
+    }
+}
+
+function selectParticipant(selectedParticipant) {
+    console.log("OE");
+    selectedParticipant.querySelector(".check").classList.remove("display-none");
 }
 
 
@@ -83,7 +102,7 @@ function sendMessage() {
 
     requestMessages();
 
-    document.querySelector("input").value = ''; iha
+    document.querySelector("input").value = '';
 }
 
 function toggleSidebar() {
