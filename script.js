@@ -1,4 +1,6 @@
 let globalName = prompt("Qual o seu nome?");
+let globalTo = "Todos";
+let globalType = "message"
 
 enterChat();
 
@@ -52,7 +54,7 @@ function loadMessages(answer) {
             </div>`
         }
 
-        if (answer.data[i].type == "private_message" && answer.data[i].from == globalName) {
+        if (answer.data[i].type == "private_message" && ( answer.data[i].from == globalName || answer.data[i].to == globalName)) {
             document.querySelector(".chat").innerHTML +=
                 `<div class="message ${answer.data[i].type}" data-identifier="message">
                 ${answer.data[i].time} <strong> ${answer.data[i].from}</strong> reservadamente para <strong>${answer.data[i].to}</strong>: ${answer.data[i].text}
@@ -73,21 +75,30 @@ function participants(answer) {
         `<div class="participant" onclick="selectParticipant(this)">
             <ion-icon name="people"></ion-icon>
             <span>Todos</span>
-            <ion-icon class="check" name="checkmark-outline"></ion-icon>
+            <ion-icon class="check display" name="checkmark-outline"></ion-icon>
         </div>`;
     for (let i = 0; i < answer.data.length; i++) {
         document.querySelector(".participants").innerHTML +=
             `<div class="participant" onclick="selectParticipant(this)">
                 <ion-icon name="people"></ion-icon>
                 <span>${answer.data[i].name}</span>
-                <ion-icon class="check display-none" name="checkmark-outline"></ion-icon>
+                <ion-icon class="check" name="checkmark-outline"></ion-icon>
             </div>`;
     }
 }
 
 function selectParticipant(selectedParticipant) {
-    console.log("OE");
-    selectedParticipant.querySelector(".check").classList.remove("display-none");
+    document.querySelector(".check.display").classList.remove("display");
+    selectedParticipant.querySelector(".check").classList.add("display");
+    globalTo = selectedParticipant.querySelector("span").innerText;
+}
+
+function selectVisibility (selectedVisiblity) {
+    document.querySelector(".visibilities .check.display").classList.remove("display");
+    selectedVisiblity.querySelector(".check").classList.add("display");
+    
+    if (selectedVisiblity.querySelector("span").innerText == "Reservadamente") globalType = "private_message";
+    else globalType = "message";
 }
 
 
@@ -95,12 +106,13 @@ function sendMessage() {
     axios.post("https://mock-api.driven.com.br/api/v4/uol/messages",
         {
             from: globalName,
-            to: "Todos",
+            to: globalTo,
             text: document.querySelector("input").value,
-            type: "message"
+            type: globalType
+        }).then(requestMessages).catch(() => {
+            alert("Conexão com o servidor interrompida! A página será reiniciada.")
+            window.location.reload();
         });
-
-    requestMessages();
 
     document.querySelector("input").value = '';
 }

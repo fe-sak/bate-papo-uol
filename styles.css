@@ -39,7 +39,6 @@ header ion-icon {
 }
 
 .bottom-bar input {
-    height: 80px;
     width: 80%;
     width: -webkit-fill-available;
     width: -moz-available;
@@ -58,6 +57,7 @@ header ion-icon {
 .bottom-bar ion-icon {
     font-size: 26px;
     margin-right: 27px;
+    cursor: pointer;
 }
 
 main .chat {
@@ -157,11 +157,14 @@ main .chat .message.private_message {
     font-size: 24px;
 }
 
+
 .sidebar .check {
     font-size: 20px;
     color: #28BB25;
     position: absolute;
     right: 0;
+    
+    opacity: 0;
 }
 
 .sidebar .participant, .sidebar .visibility {
@@ -169,8 +172,10 @@ main .chat .message.private_message {
     align-items: center;
     margin: 10px 0;
     position: relative;
+    
+    cursor: pointer;
 }
 
-.display-none {
-    display: none;
+.check.display {
+    opacity: 1;
 }
