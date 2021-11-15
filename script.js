@@ -72,7 +72,7 @@ function requestParticipants() {
 function participants(answer) {
     console.log(answer.data);
     document.querySelector(".participants").innerHTML =
-        `<div class="participant" onclick="selectParticipant(this)">
+        `<div class="participant" onclick="selectParticipant(this)" data-identifier="participant">
             <ion-icon name="people"></ion-icon>
             <span>Todos</span>
             <ion-icon class="check display" name="checkmark-outline"></ion-icon>
@@ -90,7 +90,10 @@ function participants(answer) {
 function selectParticipant(selectedParticipant) {
     document.querySelector(".check.display").classList.remove("display");
     selectedParticipant.querySelector(".check").classList.add("display");
+
     globalTo = selectedParticipant.querySelector("span").innerText;
+
+    refreshMessageInfo();
 }
 
 function selectVisibility (selectedVisiblity) {
@@ -99,6 +102,18 @@ function selectVisibility (selectedVisiblity) {
     
     if (selectedVisiblity.querySelector("span").innerText == "Reservadamente") globalType = "private_message";
     else globalType = "message";
+
+    refreshMessageInfo();
+}
+
+function refreshMessageInfo() {
+    let visibility = "";
+    let participant = globalTo;
+    if (globalType == "private_message") visibility = "Reservadamente";
+    else visibility = "Público";
+
+    if (globalTo.length > 12 ) participant = globalTo.slice(0, 14) + "...";
+    document.querySelector(".bottom-bar span").innerText = `Enviando para ${participant} (${visibility})`;
 }
 
 
