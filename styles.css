@@ -34,6 +34,59 @@ header ion-icon {
     margin-right: 22px;
 }
 
+.enter-chat {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    
+    z-index: 10;
+    
+    position: fixed;
+    top: 0;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.enter-chat img {
+    width: 130px;
+    height: 92px;
+    margin: 72px 0 94px 0;
+}
+
+input:focus {
+    outline: none;
+}
+
+.enter-chat input {
+    width: 260px;
+    height: 54px;
+
+    border: 1px solid #D7D7D7;
+    border-radius: 4px;
+
+    text-align: center;
+}
+
+.enter-chat input::placeholder {
+    font: 400 18px roboto;
+    text-align: center;
+
+    color: #AEAEAE;
+
+}
+
+.enter-chat button {
+    width: 109px;
+    height: 45px;
+
+    margin-top: 15px;
+
+    border: none;
+    border-radius: 9px;
+}
+
 .bottom-bar {
     bottom: 0;
     box-shadow: 0px -4px 6px rgba(0, 0, 0, 0.05);
@@ -59,9 +112,6 @@ header ion-icon {
     color: black;
 }
 
-.bottom-bar input:focus {
-    outline: none;
-}
 
 .bottom-bar span {
     font: 300 14px roboto;
@@ -198,6 +248,10 @@ main .chat .message.private_message {
     position: relative;
     
     cursor: pointer;
+}
+
+.display-none {
+    display: none;
 }
 
 .check.display {

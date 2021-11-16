@@ -1,29 +1,35 @@
-let globalName = prompt("Qual o seu nome?");
+let globalName = "";
 let globalTo = "Todos";
 let globalType = "message"
 
-enterChat();
-
-function enterChat() {
-
-    let name = globalName;
-    axios.post("https://mock-api.driven.com.br/api/v4/uol/participants", { name }).then(success(name)).catch(error);
-}
-
-function success(name) {
-    axios.post("https://mock-api.driven.com.br/api/v4/uol/status", { name });
-
-    setInterval(connection, 5000, name);
-}
-
-function error() {
-    globalName = prompt("Seu nome já existe no servidor! Por favor, digite outro.");
+function getName() {
+    console.log(document.querySelector(".enter-chat input").value);
+    globalName = document.querySelector(".enter-chat input").value;
 
     enterChat();
 }
 
-function connection(name) {
-    axios.post("https://mock-api.driven.com.br/api/v4/uol/status", { name });
+
+function enterChat() {
+    axios.post("https://mock-api.driven.com.br/api/v4/uol/participants", { name: globalName }).then(success).catch(error);
+}
+
+function success() {
+    axios.post("https://mock-api.driven.com.br/api/v4/uol/status", { name: globalName });
+    console.log("success");
+
+    document.querySelector(".enter-chat").classList.add("display-none");
+    setInterval(connection, 5000);
+}
+
+function error() {
+    alert("Seu nome já existe no servidor! Por favor, digite outro.");
+    
+    document.querySelector(".enter-chat input").value = "";
+}
+
+function connection() {
+    axios.post("https://mock-api.driven.com.br/api/v4/uol/status", { name: globalName });
 }
 
 
@@ -122,14 +128,14 @@ function sendMessage() {
         {
             from: globalName,
             to: globalTo,
-            text: document.querySelector("input").value,
+            text: document.querySelector(".bottom-bar input").value,
             type: globalType
         }).then(requestMessages).catch(() => {
             alert("Conexão com o servidor interrompida! A página será reiniciada.")
             window.location.reload();
         });
 
-    document.querySelector("input").value = '';
+    document.querySelector(".bottom-bar input").value = '';
 }
 
 function toggleSidebar() {
