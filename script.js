@@ -16,9 +16,18 @@ function enterChat() {
 
 function success() {
     axios.post("https://mock-api.driven.com.br/api/v4/uol/status", { name: globalName });
-    console.log("success");
 
-    document.querySelector(".enter-chat").classList.add("display-none");
+    document.querySelector(".enter-chat").innerHTML = 
+    `
+        <img src="assets/logo 2.png" class="logo">
+        <img src="assets/iPhone_8_-_4.png" class="loading">
+        <span>Entrando</span>
+    `;
+
+    setTimeout(() => {
+        document.querySelector(".enter-chat").classList.add("display-none");
+    }, 1500);
+    
     setInterval(connection, 5000);
 }
 

@@ -49,7 +49,7 @@ header ion-icon {
     align-items: center;
 }
 
-.enter-chat img {
+.enter-chat .logo {
     width: 130px;
     height: 92px;
     margin: 72px 0 94px 0;
@@ -85,6 +85,30 @@ input:focus {
 
     border: none;
     border-radius: 9px;
+}
+
+.enter-chat .loading {
+    width: 100px;
+    height: 100px;
+
+    margin-bottom: 20px;
+
+    border-radius: 100%;
+
+    animation-name: spin;
+    animation-duration: 5000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear; 
+      
+}
+
+@keyframes spin {
+    from { transform:rotate(0deg); }
+    to { transform:rotate(360deg); }
+}
+
+.enter-chat span {
+    font: 400 18px roboto;
 }
 
 .bottom-bar {
