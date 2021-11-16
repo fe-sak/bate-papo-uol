@@ -3,7 +3,6 @@ let globalTo = "Todos";
 let globalType = "message"
 
 function getName() {
-    console.log(document.querySelector(".enter-chat input").value);
     globalName = document.querySelector(".enter-chat input").value;
 
     enterChat();
@@ -12,6 +11,7 @@ function getName() {
 document.querySelector(".enter-chat input").addEventListener("keyup", (event) => {
     if (event.keyCode === 13) {
         event.preventDefault();
+
         document.querySelector(".enter-chat button").click();
     }
 })
@@ -66,21 +66,21 @@ function loadMessages(answer) {
             document.querySelector(".chat").innerHTML +=
                 `<div class="message ${answer.data[i].type}" data-identifier="message">
                 ${answer.data[i].time} <strong> ${answer.data[i].from} </strong> ${answer.data[i].text}
-            </div>`
+            </div>`;
         }
 
         if (answer.data[i].type == "message") {
             document.querySelector(".chat").innerHTML +=
                 `<div class="message ${answer.data[i].type}" data-identifier="message">
                 ${answer.data[i].time} <strong> ${answer.data[i].from}</strong> para <strong>${answer.data[i].to}</strong>: ${answer.data[i].text}
-            </div>`
+            </div>`;
         }
 
         if (answer.data[i].type == "private_message" && ( answer.data[i].from == globalName || answer.data[i].to == globalName)) {
             document.querySelector(".chat").innerHTML +=
                 `<div class="message ${answer.data[i].type}" data-identifier="message">
                 ${answer.data[i].time} <strong> ${answer.data[i].from}</strong> reservadamente para <strong>${answer.data[i].to}</strong>: ${answer.data[i].text}
-            </div>`
+            </div>`;
         }
     }
 
@@ -92,13 +92,13 @@ function requestParticipants() {
 }
 
 function participants(answer) {
-    console.log(answer.data);
     document.querySelector(".participants").innerHTML =
         `<div class="participant" onclick="selectParticipant(this)" data-identifier="participant">
             <ion-icon name="people"></ion-icon>
             <span>Todos</span>
             <ion-icon class="check display" name="checkmark-outline"></ion-icon>
         </div>`;
+
     for (let i = 0; i < answer.data.length; i++) {
         document.querySelector(".participants").innerHTML +=
             `<div class="participant" onclick="selectParticipant(this)">
@@ -146,7 +146,9 @@ function sendMessage() {
             to: globalTo,
             text: document.querySelector(".bottom-bar input").value,
             type: globalType
-        }).then(requestMessages).catch(() => {
+        })
+        .then(requestMessages)
+        .catch(() => {
             alert("Conexão com o servidor interrompida! A página será reiniciada.")
             window.location.reload();
         });
@@ -157,6 +159,7 @@ function sendMessage() {
 document.querySelector(".bottom-bar input").addEventListener("keyup", (event) => {
     if (event.keyCode === 13) {
         event.preventDefault();
+        
         document.querySelector(".bottom-bar ion-icon").click();
     }
 })
