@@ -9,6 +9,13 @@ function getName() {
     enterChat();
 }
 
+document.querySelector(".enter-chat input").addEventListener("keyup", (event) => {
+    if (event.keyCode === 13) {
+        event.preventDefault();
+        document.querySelector(".enter-chat button").click();
+    }
+})
+
 
 function enterChat() {
     axios.post("https://mock-api.driven.com.br/api/v4/uol/participants", { name: globalName }).then(success).catch(error);
@@ -146,6 +153,13 @@ function sendMessage() {
 
     document.querySelector(".bottom-bar input").value = '';
 }
+
+document.querySelector(".bottom-bar input").addEventListener("keyup", (event) => {
+    if (event.keyCode === 13) {
+        event.preventDefault();
+        document.querySelector(".bottom-bar ion-icon").click();
+    }
+})
 
 function toggleSidebar() {
     document.querySelector(".sidebar").classList.toggle("active");
