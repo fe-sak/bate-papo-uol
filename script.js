@@ -24,8 +24,8 @@ function enterChat() {
 function success() {
     axios.post("https://mock-api.driven.com.br/api/v4/uol/status", { name: globalName });
 
-    document.querySelector(".enter-chat").innerHTML = 
-    `
+    document.querySelector(".enter-chat").innerHTML =
+        `
         <img src="assets/logo 2.png" class="logo">
         <img src="assets/iPhone_8_-_4.png" class="loading">
         <span>Entrando</span>
@@ -34,13 +34,13 @@ function success() {
     setTimeout(() => {
         document.querySelector(".enter-chat").classList.add("display-none");
     }, 1500);
-    
+
     setInterval(connection, 5000);
 }
 
 function error() {
     alert("Seu nome já existe no servidor! Por favor, digite outro.");
-    
+
     document.querySelector(".enter-chat input").value = "";
 }
 
@@ -62,24 +62,34 @@ function loadMessages(answer) {
     document.querySelector(".chat").innerHTML = "";
 
     for (let i = 0; i < answer.data.length; i++) {
+        let time = answer.data[i].time.slice(0, 2);
+        console.log(time);
+
+        time = parseInt(time);
+        time += 9;
+        console.log(time);
+        if (time > 24) time -= 24;
+        time = time.toString();
+        time = time.concat(answer.data[i].time.slice(2,));
+        console.log(time);
         if (answer.data[i].type == "status") {
             document.querySelector(".chat").innerHTML +=
                 `<div class="message ${answer.data[i].type}" data-identifier="message">
-                ${answer.data[i].time} <strong> ${answer.data[i].from} </strong> ${answer.data[i].text}
+                ${time} <strong> ${answer.data[i].from} </strong> ${answer.data[i].text}
             </div>`;
         }
 
         if (answer.data[i].type == "message") {
             document.querySelector(".chat").innerHTML +=
                 `<div class="message ${answer.data[i].type}" data-identifier="message">
-                ${answer.data[i].time} <strong> ${answer.data[i].from}</strong> para <strong>${answer.data[i].to}</strong>: ${answer.data[i].text}
+                ${time} <strong> ${answer.data[i].from}</strong> para <strong>${answer.data[i].to}</strong>: ${answer.data[i].text}
             </div>`;
         }
 
-        if (answer.data[i].type == "private_message" && ( answer.data[i].from == globalName || answer.data[i].to == globalName)) {
+        if (answer.data[i].type == "private_message" && (answer.data[i].from == globalName || answer.data[i].to == globalName)) {
             document.querySelector(".chat").innerHTML +=
                 `<div class="message ${answer.data[i].type}" data-identifier="message">
-                ${answer.data[i].time} <strong> ${answer.data[i].from}</strong> reservadamente para <strong>${answer.data[i].to}</strong>: ${answer.data[i].text}
+                ${time} <strong> ${answer.data[i].from}</strong> reservadamente para <strong>${answer.data[i].to}</strong>: ${answer.data[i].text}
             </div>`;
         }
     }
@@ -118,10 +128,10 @@ function selectParticipant(selectedParticipant) {
     refreshMessageInfo();
 }
 
-function selectVisibility (selectedVisiblity) {
+function selectVisibility(selectedVisiblity) {
     document.querySelector(".visibilities .check.display").classList.remove("display");
     selectedVisiblity.querySelector(".check").classList.add("display");
-    
+
     if (selectedVisiblity.querySelector("span").innerText == "Reservadamente") globalType = "private_message";
     else globalType = "message";
 
@@ -134,7 +144,7 @@ function refreshMessageInfo() {
     if (globalType == "private_message") visibility = "Reservadamente";
     else visibility = "Público";
 
-    if (globalTo.length > 12 ) participant = globalTo.slice(0, 14) + "...";
+    if (globalTo.length > 12) participant = globalTo.slice(0, 14) + "...";
     document.querySelector(".bottom-bar span").innerText = `Enviando para ${participant} (${visibility})`;
 }
 
@@ -159,7 +169,7 @@ function sendMessage() {
 document.querySelector(".bottom-bar input").addEventListener("keyup", (event) => {
     if (event.keyCode === 13) {
         event.preventDefault();
-        
+
         document.querySelector(".bottom-bar ion-icon").click();
     }
 })
