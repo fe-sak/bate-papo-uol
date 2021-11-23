@@ -51,7 +51,7 @@ function connection() {
 
 requestMessages();
 requestParticipants();
-setInterval(requestMessages, 3000);
+let autoScroll = setInterval(requestMessages, 3000);
 setInterval(requestParticipants, 10000);
 
 function requestMessages() {
@@ -59,19 +59,17 @@ function requestMessages() {
 }
 
 function loadMessages(answer) {
-    document.querySelector(".chat").innerHTML = "";
+    lastMessage = document.querySelector(".message:last-of-type");
+    document.querySelector(".chat").innerHTML = `<ion-icon onclick="toggleAutoScroll(this)" class="on" name="refresh-circle"></ion-icon>`;
 
     for (let i = 0; i < answer.data.length; i++) {
         let time = answer.data[i].time.slice(0, 2);
-        console.log(time);
 
         time = parseInt(time);
         time += 9;
-        console.log(time);
         if (time > 24) time -= 24;
         time = time.toString();
         time = time.concat(answer.data[i].time.slice(2,));
-        console.log(time);
         if (answer.data[i].type == "status") {
             document.querySelector(".chat").innerHTML +=
                 `<div class="message ${answer.data[i].type}" data-identifier="message">
@@ -94,7 +92,8 @@ function loadMessages(answer) {
         }
     }
 
-    document.querySelector(".chat .message:last-child").scrollIntoView();
+    console.log(lastMessage);
+    if (!lastMessage.isEqualNode(document.querySelector(".chat .message:last-of-type"))) { document.querySelector(".chat .message:last-of-type").scrollIntoView() }
 }
 
 function requestParticipants() {
@@ -177,4 +176,12 @@ document.querySelector(".bottom-bar input").addEventListener("keyup", (event) =>
 function toggleSidebar() {
     document.querySelector(".sidebar").classList.toggle("active");
     document.querySelector(".sidebar-background").classList.toggle("active");
+}
+
+function toggleAutoScroll(clickedElement) {
+    clickedElement.classList.toggle("on");
+    clickedElement.classList.toggle("off");
+
+    if (clickedElement.classList.contains("on")) autoScroll = setInterval(requestMessages, 3000);
+    else clearInterval(autoScroll);
 }

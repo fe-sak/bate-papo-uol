@@ -24,6 +24,8 @@ header {
     top: 0;
 
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.05);
+
+    z-index: 10;
 }
 
 header img {
@@ -166,6 +168,23 @@ input:focus {
 
 main .chat {
     margin: 106px 0 80px 0;
+    position: relative;
+}
+
+.chat ion-icon {
+    position: fixed;
+    top: 90px;
+    right: 10px;
+
+    font-size: 30px;   
+}
+
+.chat ion-icon.on {
+    color: #28BB25;
+}
+
+.chat ion-icon.off {
+    color: gray;
 }
 
 main .chat .message {
