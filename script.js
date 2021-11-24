@@ -1,12 +1,11 @@
 let globalName = "";
 let globalTo = "Todos";
-let globalType = "message"
+let globalType = "message";
 
-function getName() {
-    globalName = document.querySelector(".enter-chat input").value;
-
-    enterChat();
-}
+requestMessages();
+requestParticipants();
+let autoScroll = setInterval(requestMessages, 3000);
+setInterval(requestParticipants, 1000);
 
 document.querySelector(".enter-chat input").addEventListener("keyup", (event) => {
     if (event.keyCode === 13) {
@@ -14,7 +13,22 @@ document.querySelector(".enter-chat input").addEventListener("keyup", (event) =>
 
         document.querySelector(".enter-chat button").click();
     }
-})
+});
+
+document.querySelector(".bottom-bar input").addEventListener("keyup", (event) => {
+    if (event.keyCode === 13) {
+        event.preventDefault();
+
+        document.querySelector(".bottom-bar ion-icon").click();
+    }
+});
+
+function getName() {
+    globalName = document.querySelector(".enter-chat input").value;
+
+    enterChat();
+}
+
 
 
 function enterChat() {
@@ -26,8 +40,8 @@ function success() {
 
     document.querySelector(".enter-chat").innerHTML =
         `
-        <img src="assets/logo 2.png" class="logo">
-        <img src="assets/iPhone_8_-_4.png" class="loading">
+        <img src="assets/logo 2.png" alt="page logo" class="logo">
+        <img src="assets/iPhone_8_-_4.png" alt="loading icon" class="loading">
         <span>Entrando</span>
     `;
 
@@ -49,10 +63,6 @@ function connection() {
 }
 
 
-requestMessages();
-requestParticipants();
-let autoScroll = setInterval(requestMessages, 3000);
-setInterval(requestParticipants, 10000);
 
 function requestMessages() {
     axios.get("https://mock-api.driven.com.br/api/v4/uol/messages").then(loadMessages);
@@ -69,27 +79,25 @@ function loadMessages(answer) {
         time += 9;
         if (time > 24) time -= 24;
         time = time.toString();
-        time = time.concat(answer.data[i].time.slice(2,));
+        time = time.concat(answer.data[i].time.slice(2, ));
+
         if (answer.data[i].type == "status") {
             document.querySelector(".chat").innerHTML +=
                 `<div class="message ${answer.data[i].type}" data-identifier="message">
                 ${time} <strong> ${answer.data[i].from} </strong> ${answer.data[i].text}
             </div>`;
-        }
-
-        if (answer.data[i].type == "message") {
+        } else if (answer.data[i].type == "message") {
             document.querySelector(".chat").innerHTML +=
                 `<div class="message ${answer.data[i].type}" data-identifier="message">
                 ${time} <strong> ${answer.data[i].from}</strong> para <strong>${answer.data[i].to}</strong>: ${answer.data[i].text}
             </div>`;
-        }
-
-        if (answer.data[i].type == "private_message" && (answer.data[i].from == globalName || answer.data[i].to == globalName)) {
+        } else if (answer.data[i].type == "private_message" && (answer.data[i].from == globalName || answer.data[i].to == globalName)) {
             document.querySelector(".chat").innerHTML +=
                 `<div class="message ${answer.data[i].type}" data-identifier="message">
                 ${time} <strong> ${answer.data[i].from}</strong> reservadamente para <strong>${answer.data[i].to}</strong>: ${answer.data[i].text}
             </div>`;
         }
+
     }
 
     console.log(lastMessage);
@@ -105,8 +113,10 @@ function participants(answer) {
         `<div class="participant" onclick="selectParticipant(this)" data-identifier="participant">
             <ion-icon name="people"></ion-icon>
             <span>Todos</span>
-            <ion-icon class="check display" name="checkmark-outline"></ion-icon>
+            <ion-icon class="check" name="checkmark-outline"></ion-icon>
         </div>`;
+
+    if (globalTo == "Todos") document.querySelector(".participant .check").classList.add("display");
 
     for (let i = 0; i < answer.data.length; i++) {
         document.querySelector(".participants").innerHTML +=
@@ -115,7 +125,12 @@ function participants(answer) {
                 <span>${answer.data[i].name}</span>
                 <ion-icon class="check" name="checkmark-outline"></ion-icon>
             </div>`;
+
+        if (answer.data[i].name == globalTo) {
+            document.querySelector(".participant:last-of-type .check").classList.add("display");
+        }
     }
+
 }
 
 function selectParticipant(selectedParticipant) {
@@ -147,10 +162,8 @@ function refreshMessageInfo() {
     document.querySelector(".bottom-bar span").innerText = `Enviando para ${participant} (${visibility})`;
 }
 
-
 function sendMessage() {
-    axios.post("https://mock-api.driven.com.br/api/v4/uol/messages",
-        {
+    axios.post("https://mock-api.driven.com.br/api/v4/uol/messages", {
             from: globalName,
             to: globalTo,
             text: document.querySelector(".bottom-bar input").value,
@@ -164,14 +177,6 @@ function sendMessage() {
 
     document.querySelector(".bottom-bar input").value = '';
 }
-
-document.querySelector(".bottom-bar input").addEventListener("keyup", (event) => {
-    if (event.keyCode === 13) {
-        event.preventDefault();
-
-        document.querySelector(".bottom-bar ion-icon").click();
-    }
-})
 
 function toggleSidebar() {
     document.querySelector(".sidebar").classList.toggle("active");
