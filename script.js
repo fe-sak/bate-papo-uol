@@ -100,7 +100,6 @@ function loadMessages(answer) {
 
     }
 
-    console.log(lastMessage);
     if (!lastMessage.isEqualNode(document.querySelector(".chat .message:last-of-type"))) { document.querySelector(".chat .message:last-of-type").scrollIntoView() }
 }
 
